@@ -1,0 +1,28 @@
+.configurators {
+  display: flex;
+
+  .card-configurator {
+    display: flex;
+    flex: 1;
+
+    .attributes-panel {
+      width: 100px;
+      display: flex;
+      flex-direction: column;
+      padding: 8px 16px;
+
+      .attribute {
+        padding: 8px 0;
+      }
+    }
+
+    .trigger-panel {
+      flex: 1;
+      padding: 8px 16px;
+
+      .addable-select {
+        padding: 8px 0;
+      }
+    }
+  }
+}

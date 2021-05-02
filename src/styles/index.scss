@@ -1,6 +1,13 @@
+@import '../scripts/game-field/game-field.scss';
+@import '../scripts/configurator/configurator.scss';
+
 $body-color: slateblue;
 
 body {
   color: $body-color;
   font-family: sans-serif;
+}
+
+label {
+  color: black;
 }

@@ -1,0 +1,11 @@
+#game-field {
+  display: flex;
+
+  .card-field {
+    flex-grow: 1;
+    border: solid 1px rgb(51, 48, 48);
+    border-radius: 5%;
+    height: 200px;
+    margin: 10px;
+  }
+}

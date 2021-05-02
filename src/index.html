@@ -3,10 +3,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>webpack starterkit</title>
+  <title>Exceed Simulator</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-  <h1>webpack starter</h1>
-  <p>✨ A lightweight foundation for your next webpack based frontend project.</p>
+  <div class="container">
+    <div class="configurators">
+      <div id="configurator1" class="card-configurator">
+        <div class="attributes-panel">
+          <div class="attribute">
+            <label for="attr-rng">Rng</label>
+            <input class="form-control" name="attr-rng" type="text">
+          </div>
+          <div class="attribute">
+            <label for="attr-pow">Pow</label>
+            <input class="form-control" name="attr-pow" type="text">
+
+          </div>
+          <div class="attribute">
+            <label for="attr-spd">Spd</label>
+            <input class="form-control" name="attr-spd" type="text">
+
+          </div>
+          <div class="attribute">
+            <label for="attr-arm">Arm</label>
+            <input class="form-control" name="attr-arm" type="text">
+
+          </div>
+          <div class="attribute">
+            <label for="attr-grd">Grd</label>
+            <input class="form-control" name="attr-grd" type="text">
+          </div>
+        </div>
+        <div class="trigger-panel">
+          <div class="addable-select">
+            <label for="always-on">Always on effects</label>
+            <select class="form-control" name="always-on">
+              <option value="ignarmor">Ignore Armor</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="configurator1" class="card-configurator">
+      </div>
+    </div>
+    <div id="game-field">
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+      <div class="card-field"></div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
