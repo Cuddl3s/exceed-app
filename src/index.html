@@ -8,6 +8,7 @@
 </head>
 <body>
   <div class="container">
+    <div class="titles"><h1>Player #1</h1><h1>Player #2</h1></div>
     <div class="configurators">
       <div id="configurator1" class="card-configurator">
         <div class="attributes-panel">
@@ -44,7 +45,40 @@
           </div>
         </div>
       </div>
-      <div id="configurator1" class="card-configurator">
+      <div id="configurator2" class="card-configurator">
+        <div class="attributes-panel">
+          <div class="attribute">
+            <label for="attr-rng">Rng</label>
+            <input class="form-control" name="attr-rng" type="text">
+          </div>
+          <div class="attribute">
+            <label for="attr-pow">Pow</label>
+            <input class="form-control" name="attr-pow" type="text">
+
+          </div>
+          <div class="attribute">
+            <label for="attr-spd">Spd</label>
+            <input class="form-control" name="attr-spd" type="text">
+
+          </div>
+          <div class="attribute">
+            <label for="attr-arm">Arm</label>
+            <input class="form-control" name="attr-arm" type="text">
+
+          </div>
+          <div class="attribute">
+            <label for="attr-grd">Grd</label>
+            <input class="form-control" name="attr-grd" type="text">
+          </div>
+        </div>
+        <div class="trigger-panel">
+          <div class="addable-select">
+            <label for="always-on">Always on effects</label>
+            <select class="form-control" name="always-on">
+              <option value="ignarmor">Ignore Armor</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
     <div id="game-field">

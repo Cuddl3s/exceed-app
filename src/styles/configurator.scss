@@ -1,6 +1,10 @@
 .configurators {
   display: flex;
 
+  #configurator2 {
+    flex-direction: row-reverse;
+  }
+
   .card-configurator {
     display: flex;
     flex: 1;
