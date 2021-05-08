@@ -1,11 +1,14 @@
 export type Range = [number,number];
 
 export type Character = {
-
+  currentFieldNumber: number;
   card: Card;
 }
 
-export type Trigger = (myCharacter: Character, opponent: Character) => void;
+export type Trigger = {
+  name: string;
+  effect: (myCharacter: Character, opponent: Character) => void;
+};
 
 export type Card = {
   name: string;
