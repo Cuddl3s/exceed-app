@@ -5,17 +5,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: Path.resolve(__dirname, '../src/scripts/index.js'),
+    app: Path.resolve(__dirname, '../src/scripts/index.ts'),
   },
   output: {
     path: Path.join(__dirname, '../build'),
     filename: 'js/[name].js',
-  },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-      name: false,
-    },
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -25,6 +19,7 @@ module.exports = {
     }),
   ],
   resolve: {
+    extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
     alias: {
       '~': Path.resolve(__dirname, '../src'),
     },
@@ -36,6 +31,7 @@ module.exports = {
         include: /node_modules/,
         type: 'javascript/auto',
       },
+      { test: /\.tsx?$/, loader: "ts-loader" },
       {
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
         use: {

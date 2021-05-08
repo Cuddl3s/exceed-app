@@ -27,6 +27,7 @@ module.exports = merge(common, {
   ],
   module: {
     rules: [
+      { test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.js$/,
         include: Path.resolve(__dirname, '../src'),
