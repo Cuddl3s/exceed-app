@@ -11,3 +11,12 @@ body {
 label {
   color: black;
 }
+
+.titles {
+  display: flex;
+  justify-content: space-around;
+}
+
+h1 {
+  border-bottom: solid 3px;
+}
