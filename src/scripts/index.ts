@@ -27,3 +27,21 @@ const cardDefault: Card = {
 
   hit: [{name: "Move the opponent 1 or 2", effect: graspFunction}],
 };
+const playerOne = "#configurator1";
+const playerTwo = "#configurator2";
+
+const addCard = (card, player) => {
+  const playerAttributes = $(`${player}`).children(".attributes-panel");
+  const playerTriggers =  $(`${player}`).children(".trigger-panel");
+  Object.keys(card).forEach(key => {
+    let currentAttributeInput = playerAttributes.find(`input[name*=${key}]`);
+    let value = card[key];
+    currentAttributeInput.val(value);
+  });
+};
+
+addCard(cardDefault, playerOne);
+addCard(cardDefault, playerTwo);
+
+
+
