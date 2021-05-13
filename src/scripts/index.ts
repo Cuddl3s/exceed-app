@@ -27,21 +27,31 @@ const cardDefault: Card = {
 
   hit: [{name: "Move the opponent 1 or 2", effect: graspFunction}],
 };
-const playerOne = "#configurator1";
-const playerTwo = "#configurator2";
+
+const playerOneDiv = "#configurator1";
+const playerTwoDiv = "#configurator2";
 
 const addCard = (card, player) => {
   const playerAttributes = $(`${player}`).children(".attributes-panel");
   const playerTriggers =  $(`${player}`).children(".trigger-panel");
   Object.keys(card).forEach(key => {
     let currentAttributeInput = playerAttributes.find(`input[name*=${key}]`);
-    let value = card[key];
-    currentAttributeInput.val(value);
+    currentAttributeInput.val(card[key]);
+    // let currentAttributeTrigger = playerTriggers.find(`select[name=${key}]`);
+    let currentAttributeTrigger = playerTriggers.find(`select[name=${key}]`);
+    // console.log(card[key].get());
+    // console.log(currentAttributeTrigger.get()[0]);
+    currentAttributeTrigger.children().remove();
+    currentAttributeTrigger.append(`<option>${card[key]}</option>`);
+    // currentAttributeTrigger.text('hello');
+
+      // currentTriggerInput.empty();
+      // currentTriggerInput.append(`<option>${card[key][0]}</option>`); // why does it keep saying it can't read property name of undefined???
   });
 };
 
-addCard(cardDefault, playerOne);
-addCard(cardDefault, playerTwo);
+addCard(cardDefault, playerOneDiv);
+addCard(cardDefault, playerTwoDiv);
 
 
 
