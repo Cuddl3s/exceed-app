@@ -45,19 +45,22 @@ const addCard = (card: Card, playerNumber: number) => {
   const { attributes, triggers } = card;
 
   Object.entries(attributes).forEach(([attribute, value]) => {
-    const currentAttributeInput = playerAttributes.find(`input[name*=${attribute}]`);
+    const $currentAttributeInput = playerAttributes.find(`input[name*=${attribute}]`);
     if(attribute === "range" && value[0] === value[1]) {
-      currentAttributeInput.val(`${value[0]}`);
-    } else if(attribute === "range" &&value[0] !== value[1]) { //do I need the attribute === "range" here?
-      currentAttributeInput.val(`${value[0]}-${value[1]}`);
+      $currentAttributeInput.val(`${value[0]}`);
+    } else if(value[0] !== value[1]) {
+      $currentAttributeInput.val(`${value[0]}-${value[1]}`);
     } else {
-      currentAttributeInput.val(`${value}`);
+      $currentAttributeInput.val(`${value}`);
     }
   });
 
   Object.entries(triggers).forEach(([trigger,value]) => {
     const $currentTriggerSelect = playerTriggers.find(`select[name=${trigger}]`);
     $currentTriggerSelect.val(value[0].name);
+    const $allTriggerSelect = playerTriggers.find("select");
+    const $restTriggerSelect = $allTriggerSelect.not(`select[name=${trigger}]`);
+    $restTriggerSelect.val("");    
   });
 };
 
