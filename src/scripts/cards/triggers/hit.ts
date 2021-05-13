@@ -6,4 +6,6 @@ export const hitGrasp: Trigger = {name: "Push or Pull 1 or 2", effect: (_: Chara
 
 export const hitSweep: Trigger = {name: "The opponent discards a card at random", effect: () => {}};
 
-export default [hitGrasp, hitSweep];
+export const hitAssault: Trigger = {name: "Gain Advantage (you take the next turn regardless of who initiated the strike.", effect: () => {}};
+
+export default [hitGrasp, hitSweep, hitAssault];
