@@ -1,8 +1,11 @@
 import { Character, Trigger } from "../types/types";
 import hitTriggers from "./triggers/hit";
+import beforeTriggers from "./triggers/before";
+import afterTriggers from "./triggers/after";
+import alwaysOnTriggers from "./triggers/always_on";
 
 const before: Trigger[] = [
-  {name: "Advance 3. If you moved past the opponent, their attack does not hit you", effect: (myCharacter: Character, _: Character) => {myCharacter.currentFieldNumber += 3;}}
+  ...beforeTriggers,
 ];
 
 const hit: Trigger[] = [
@@ -10,7 +13,11 @@ const hit: Trigger[] = [
 ];
 
 const after: Trigger[] = [
-  {name: "Draw a card", effect: () => {}}
+  ...afterTriggers,
 ];
 
-export default {before, hit, after};
+const alwaysOn: Trigger[] = [
+  ...alwaysOnTriggers,
+];
+
+export default {before, hit, after, alwaysOn};
