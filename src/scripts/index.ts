@@ -1,5 +1,5 @@
 import '../styles/index.scss';
-import { AttributeName, Card, Character, Trigger } from './types/types';
+import { AttributeName, Card, Character, Trigger, gameField } from './types/types';
 
 import triggers from "./cards/triggers";
 import Grasp from './cards/Grasp';
@@ -32,19 +32,6 @@ const initTriggerSelects = () => {
 
 };
 
-$(() => {
-
-  initTriggerSelects();
-
-  const playerOneDiv = "#configurator1";
-  const playerTwoDiv = "#configurator2";
-
-  playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
-
-  addCard(Focus, 1);
-  addCard(Sweep, 2);
-});
-
 const addTriggers = (triggers, $playerTriggers) => {
   Object.entries(triggers).forEach(([trigger,value]) => {
     const $currentTriggerSelect = $playerTriggers.find(`select[name=${trigger}]`);
@@ -76,7 +63,17 @@ const addCard = (card: Card, playerNumber: number) => {
   addTriggers(triggers, $playerTriggers);
 };
 
+$(() => {
 
+  initTriggerSelects();
 
+  const playerOneDiv = "#configurator1";
+  const playerTwoDiv = "#configurator2";
 
+  playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
 
+  const gameField: gameField = ["", "", "Player 1", "", "", "", "Player 2", "", ""];
+
+  addCard(Focus, 1);
+  addCard(Sweep, 2);
+});

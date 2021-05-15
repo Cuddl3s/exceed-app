@@ -35,3 +35,5 @@ export type Triggers = {
 }
 
 export type TriggerName = keyof Triggers;
+
+export type gameField = [string, string, string, string, string, string, string, string, string];
