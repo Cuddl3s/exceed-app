@@ -45,13 +45,14 @@ $(() => {
   addCard(Sweep, 2);
 });
 
-const addCard = (card: Card, playerNumber: number) => {
+const addTriggers = (triggers, $playerTriggers) => {
+  Object.entries(triggers).forEach(([trigger,value]) => {
+    const $currentTriggerSelect = $playerTriggers.find(`select[name=${trigger}]`);
+    $currentTriggerSelect.val(value[0].name);
+  });
+};
 
-  const $playerAttributes = playerConfigurators[playerNumber-1].children(".attributes-panel");
-  const $playerTriggers =  playerConfigurators[playerNumber-1].children(".trigger-panel");
-
-  const { attributes, triggers } = card;
-
+const addAttributes = (attributes, $playerAttributes) => {
   Object.entries(attributes).forEach(([attribute, value]) => {
     const $currentAttributeInput = $playerAttributes.find(`input[name*=${attribute}]`);
     if(attribute === "range" && value[0] === value[1]) {
@@ -62,17 +63,20 @@ const addCard = (card: Card, playerNumber: number) => {
       $currentAttributeInput.val(`${value}`);
     }
   });
+};
 
-  addTriggers($playerTriggers, triggers);
+const addCard = (card: Card, playerNumber: number) => {
 
+  const $playerAttributes = playerConfigurators[playerNumber-1].children(".attributes-panel");
+  const $playerTriggers =  playerConfigurators[playerNumber-1].children(".trigger-panel");
+
+  const { attributes, triggers } = card;
+
+  addAttributes(attributes, $playerAttributes);
+  addTriggers(triggers, $playerTriggers);
 };
 
 
-const addTriggers = ($playerTriggers, triggers) => {
-  Object.entries(triggers).forEach(([trigger,value]) => {
-    const $currentTriggerSelect = $playerTriggers.find(`select[name=${trigger}]`);
-    $currentTriggerSelect.val(value[0].name);
-  });
-};
+
 
 
