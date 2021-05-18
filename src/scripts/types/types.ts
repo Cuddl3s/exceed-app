@@ -1,7 +1,7 @@
 export type Range = [number,number];
 
 export type Character = {
-  currentFieldNumber: number;
+  move: number;
   card: Card;
 }
 
@@ -36,4 +36,4 @@ export type Triggers = {
 
 export type TriggerName = keyof Triggers;
 
-export type gameField = [string, string, string, string, string, string, string, string, string];
+export type GameField = [string, string, string, string, string, string, string, string, string];

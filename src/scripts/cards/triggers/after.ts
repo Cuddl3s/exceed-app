@@ -1,7 +1,7 @@
 import { Character, Trigger } from "../../types/types";
 
 export const afterCross: Trigger = {name: "Retreat 3.", effect: (myCharacter: Character, _: Character) => {
-  myCharacter.currentFieldNumber -= 3;
+  myCharacter.move = -3;
 }};
 
 export const afterFocus: Trigger = {name: "Draw a card.", effect: () => {}};

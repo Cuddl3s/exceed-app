@@ -1,5 +1,5 @@
 import '../styles/index.scss';
-import { AttributeName, Card, Character, Trigger, gameField } from './types/types';
+import { AttributeName, Card, Character, Trigger, GameField } from './types/types';
 
 import triggers from "./cards/triggers";
 import Grasp from './cards/Grasp';
@@ -63,6 +63,27 @@ const addCard = (card: Card, playerNumber: number) => {
   addTriggers(triggers, $playerTriggers);
 };
 
+const placePlayer = (player: string, gameField, number: number) => {
+  if(gameField[number - 1] !== "") {
+    if(gameField.includes(player) && gameField[number - 1] !== player) {
+      gameField[gameField.indexOf(player)] = "";
+    } else if (gameField[number - 1] === player) {
+      return;
+    } else {
+      alert(`Cannot place ${player} on this field.`);
+    }
+  } else if(gameField[number - 1] === "") {
+    if(gameField.includes(player)) {
+      gameField[gameField.indexOf(player)] = "";
+      gameField[number - 1] = player;
+    }
+  } else {
+    gameField[number - 1] = player;
+  }
+  
+  console.log(gameField);
+};
+
 $(() => {
 
   initTriggerSelects();
@@ -72,8 +93,20 @@ $(() => {
 
   playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
 
-  const gameField: gameField = ["", "", "Player 1", "", "", "", "Player 2", "", ""];
+  const playerOne: Character = {
+    move: 0,
+    card: Focus,
+  };
 
-  addCard(Focus, 1);
-  addCard(Sweep, 2);
+  const playerTwo: Character = {
+    move: 0,
+    card: Sweep,
+  };
+
+  const gameField: GameField = ["","Player Two","","","","","","",""];
+
+  placePlayer("Player One", gameField, 2);
+  placePlayer("Player Two", gameField, 5);
+  addCard(playerOne.card, 1);
+  addCard(playerTwo.card, 2);
 });
