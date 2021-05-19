@@ -80,7 +80,13 @@ const placePlayer = (player: string, gameField, number: number) => {
   } else {
     gameField[number - 1] = player;
   }
-  
+};
+
+const showPlayerPositions = (gameField) => {
+  const $cardFields = $("#game-field").children();
+  gameField.forEach((field, index) => { if(field !== "") {
+    $cardFields[index].innerHTML = `<p>${field}</p>`;
+  }});
   console.log(gameField);
 };
 
@@ -105,8 +111,10 @@ $(() => {
 
   const gameField: GameField = ["","Player Two","","","","","","",""];
 
+  
   placePlayer("Player One", gameField, 2);
   placePlayer("Player Two", gameField, 5);
+  showPlayerPositions(gameField);
   addCard(playerOne.card, 1);
   addCard(playerTwo.card, 2);
 });
