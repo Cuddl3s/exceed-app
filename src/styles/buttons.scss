@@ -1,0 +1,22 @@
+.button-holder {
+  display: flex;
+  justify-content: space-around;
+
+  .button {
+    cursor: pointer;
+    border: 1px solid #044ca2;
+    border-radius: 6%;
+    font-size: 16px;
+    background-color: #93b6e0;
+    color: #2b2b61;
+  }
+
+  .button:hover {
+    background-color: #405eec;
+    color: white;
+  }
+
+  .button:focus-visible {
+    border: 2px solid #044ca2;
+  }
+}
