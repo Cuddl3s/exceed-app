@@ -11,6 +11,8 @@ import Focus from './cards/Focus';
 import Spike from './cards/Spike';
 import Sweep from './cards/Sweep';
 
+let gameField: GameField;
+
 if (process.env.NODE_ENV === 'development') {
   require('../index.html');
 }
@@ -65,53 +67,38 @@ const addCard = (card: Card, playerNumber: number) => {
 
 const placePlayer = (player: string, gameField: GameField, number: number) => {
   if(gameField.includes(player)) {
-    if(gameField[number - 1] === player) {
+    if(gameField[number] === player) {
       return;
-    } else if(gameField[number - 1] !== "") {
+    } else if(gameField[number] !== "") {
       alert(`Cannot place ${player} on this field.`);
     } else {
-      gameField[number - 1] = player;
+      gameField[gameField.indexOf(player)] = "";
+      gameField[number] = player;
     }
-  } else if(gameField[number - 1] === "") {
-    gameField[number - 1] = player;
+  } else if(gameField[number] === "") {
+    gameField[number] = player;
   } else {
     alert(`Cannot place ${player} on this field.`);
   }
   console.log(gameField);
 };
 
-
-// const placePlayer = (player: string, gameField: GameField, number: number) => {
-//   if(gameField[number - 1] !== "") {
-//     if(gameField.includes(player) && gameField[number - 1] !== player) {
-//       gameField[gameField.indexOf(player)] = "";
-//     } else if (gameField[number - 1] === player) {
-//       return;
-//     } else {
-//       alert(`Cannot place ${player} on this field.`);
-//     }
-//   } else if(gameField[number - 1] === "") {
-//     if(gameField.includes(player)) {
-//       gameField[gameField.indexOf(player)] = "";
-//       gameField[number - 1] = player;
-//     }
-//       gameField[number - 1] = player;
-//   } else {
-//     gameField[number - 1] = player;
-//   }
-// };
+let fieldClickListener;
 
 const showPlayerPositions = (gameField: GameField, $cardFields) => {
   gameField.forEach((field, index) => { if(field !== "") {
     $cardFields[index].innerHTML = `<p>${field}</p>`;
-  }});
+    }
+    $cardFields.each(function() { $(this).off("click", fieldClickListener);
+  });
+  });
 };
 
 const placeCardFieldOnClick = (player: string, gameField: GameField) => {
   const $cardFields = $("#game-field").children();
   console.log(gameField);
-  $cardFields.each(function(index) { $(this).on("click", function() {
-    let number =  index + 1;
+  $cardFields.each(function(index) { $(this).on("click", function fieldClickListener() {
+    let number =  index;
     placePlayer(player, gameField, number);
     showPlayerPositions(gameField, $cardFields);
     });
@@ -137,7 +124,7 @@ $(() => {
     card: Sweep,
   };
 
-  let gameField: GameField = ["","","","","","","","",""];
+  gameField = ["","","","","","","","",""];
 
   const $placeButtonPlayerOne = $("#place-player-one-button");
   const $placeButtonPlayerTwo = $("#place-player-two-button");
