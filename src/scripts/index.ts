@@ -63,31 +63,59 @@ const addCard = (card: Card, playerNumber: number) => {
   addTriggers(triggers, $playerTriggers);
 };
 
-const placePlayer = (player: string, gameField, number: number) => {
-  if(gameField[number - 1] !== "") {
-    if(gameField.includes(player) && gameField[number - 1] !== player) {
-      gameField[gameField.indexOf(player)] = "";
-    } else if (gameField[number - 1] === player) {
+const placePlayer = (player: string, gameField: GameField, number: number) => {
+  if(gameField.includes(player)) {
+    if(gameField[number - 1] === player) {
       return;
-    } else {
+    } else if(gameField[number - 1] !== "") {
       alert(`Cannot place ${player} on this field.`);
-    }
-  } else if(gameField[number - 1] === "") {
-    if(gameField.includes(player)) {
-      gameField[gameField.indexOf(player)] = "";
+    } else {
       gameField[number - 1] = player;
     }
-  } else {
+  } else if(gameField[number - 1] === "") {
     gameField[number - 1] = player;
+  } else {
+    alert(`Cannot place ${player} on this field.`);
   }
+  console.log(gameField);
 };
 
-const showPlayerPositions = (gameField) => {
-  const $cardFields = $("#game-field").children();
+
+// const placePlayer = (player: string, gameField: GameField, number: number) => {
+//   if(gameField[number - 1] !== "") {
+//     if(gameField.includes(player) && gameField[number - 1] !== player) {
+//       gameField[gameField.indexOf(player)] = "";
+//     } else if (gameField[number - 1] === player) {
+//       return;
+//     } else {
+//       alert(`Cannot place ${player} on this field.`);
+//     }
+//   } else if(gameField[number - 1] === "") {
+//     if(gameField.includes(player)) {
+//       gameField[gameField.indexOf(player)] = "";
+//       gameField[number - 1] = player;
+//     }
+//       gameField[number - 1] = player;
+//   } else {
+//     gameField[number - 1] = player;
+//   }
+// };
+
+const showPlayerPositions = (gameField: GameField, $cardFields) => {
   gameField.forEach((field, index) => { if(field !== "") {
     $cardFields[index].innerHTML = `<p>${field}</p>`;
   }});
+};
+
+const placeCardFieldOnClick = (player: string, gameField: GameField) => {
+  const $cardFields = $("#game-field").children();
   console.log(gameField);
+  $cardFields.each(function(index) { $(this).on("click", function() {
+    let number =  index + 1;
+    placePlayer(player, gameField, number);
+    showPlayerPositions(gameField, $cardFields);
+    });
+  });
 };
 
 $(() => {
@@ -109,12 +137,19 @@ $(() => {
     card: Sweep,
   };
 
-  const gameField: GameField = ["","Player Two","","","","","","",""];
+  let gameField: GameField = ["","","","","","","","",""];
 
-  
-  placePlayer("Player One", gameField, 2);
-  placePlayer("Player Two", gameField, 5);
-  showPlayerPositions(gameField);
+  const $placeButtonPlayerOne = $("#place-player-one-button");
+  const $placeButtonPlayerTwo = $("#place-player-two-button");
+
+  $placeButtonPlayerOne.on("click", function() {
+    placeCardFieldOnClick("Player One", gameField);
+  });
+
+  $placeButtonPlayerTwo.on("click", function() {
+    placeCardFieldOnClick("Player Two", gameField);
+  });
+
   addCard(playerOne.card, 1);
   addCard(playerTwo.card, 2);
 });
