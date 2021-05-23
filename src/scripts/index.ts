@@ -86,11 +86,9 @@ const placePlayer = (player: string, gameField: GameField, number: number) => {
 let fieldClickListener;
 
 const showPlayerPositions = (gameField: GameField, $cardFields) => {
-  gameField.forEach((field, index) => { if(field !== "") {
-    $cardFields[index].innerHTML = `<p>${field}</p>`;
-    }
-    $cardFields.each(function() { $(this).off("click", fieldClickListener);
-  });
+  gameField.forEach((field, index) => { 
+    $cardFields[index].innerHTML = `${field}`;
+    $cardFields.off("click", fieldClickListener);
   });
 };
 
