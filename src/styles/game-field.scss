@@ -7,5 +7,13 @@
     border-radius: 5%;
     height: 200px;
     margin: 10px;
+    text-align: center;
+    padding: 80px 0;
+    max-width: 100px;
+    cursor: pointer;
+  }
+
+  .card-field:hover {
+    border: solid 2px rgb(51, 48, 48);
   }
 }

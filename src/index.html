@@ -8,7 +8,7 @@
 </head>
 <body>
   <div class="container">
-    <div class="titles"><h1>Player #1</h1><h1>Player #2</h1></div>
+    <div class="titles"><h1 id="player-one">Player #1</h1><h1 id="player-two">Player #2</h1></div>
     <div class="configurators">
       <div id="configurator1" class="card-configurator">
         <div class="attributes-panel">
@@ -39,7 +39,7 @@
         <div class="trigger-panel">
           <div class="addable-select">
             <label for="always-on">Always on effects</label>
-            <select class="form-control" name="always-on">
+            <select class="form-control" name="alwaysOn">
               <option value="ignarmor">Ignore Armor</option>
             </select>
           </div>
@@ -92,7 +92,7 @@
         <div class="trigger-panel">
           <div class="addable-select">
             <label for="always-on">Always on effects</label>
-            <select class="form-control" name="always-on">
+            <select class="form-control" name="alwaysOn">
               <option value="ignarmor">Ignore Armor</option>
             </select>
           </div>
@@ -116,6 +116,10 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="button-holder">
+      <button id="place-player-one-button" class="button">Place Player #1</button>
+      <button id="place-player-two-button" class="button">Place Player #2</button>
     </div>
     <div id="game-field">
       <div class="card-field"></div>
