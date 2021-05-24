@@ -115,6 +115,29 @@ const placeCardFieldOnClick = (player: string, gameField: GameField) => {
   });
 };
 
+const runHitEffects = (first: Character, second: Character) => {
+  first.card.triggers.hit[0].effect(first, second);
+};
+
+const checkRange = (
+  attacker: Character,
+  defender: Character,
+  secondPlayer: string
+) => {
+  for (let i = 1; i <= attacker.card.attributes.range[1]; i++) {
+    if (
+      gameField.indexOf(secondPlayer) ===
+        attacker.card.attributes.range[0] + i ||
+      attacker.card.attributes.range[0] - i
+    ) {
+      attacker.guage++;
+      runHitEffects(attacker, defender);
+    } else {
+      alert("The opponent is not in this card's attack range.");
+    }
+  }
+};
+
 const runBeforeEffects = (attacker: Character, defender: Character) => {
   if (attacker.card.triggers.before) {
     attacker.card.triggers.before.forEach((trigger) => {
@@ -123,7 +146,7 @@ const runBeforeEffects = (attacker: Character, defender: Character) => {
   }
 };
 
-const compareSpeeds = (playerOne, playerTwo) => {
+const compareSpeeds = (playerOne: Character, playerTwo: Character) => {
   const players = [playerOne, playerTwo];
   return players.sort(
     (first, second) =>
@@ -131,9 +154,14 @@ const compareSpeeds = (playerOne, playerTwo) => {
   );
 };
 
-const simulateFight = (playerOne, playerTwo) => {
+const simulateFight = (
+  playerOne: Character,
+  playerTwo: Character,
+  secondPlayer: string
+) => {
   const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
   runBeforeEffects(attacker, defender);
+  checkRange(attacker, defender, secondPlayer);
 };
 
 $(() => {
@@ -141,17 +169,21 @@ $(() => {
 
   const playerOneDiv = "#configurator1";
   const playerTwoDiv = "#configurator2";
+  const firstPlayer = "Player One";
+  const secondPlayer = "Player Two";
 
   playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
 
   let playerOne: Character = {
     move: 0,
     card: Focus,
+    guage: 0,
   };
 
   let playerTwo: Character = {
     move: 0,
     card: Sweep,
+    guage: 0,
   };
 
   gameField = ["", "", "", "", "", "", "", "", ""];
@@ -170,5 +202,5 @@ $(() => {
   addCard(playerOne.card, 1);
   addCard(playerTwo.card, 2);
 
-  simulateFight(playerOne, playerTwo);
+  simulateFight(playerOne, playerTwo, secondPlayer);
 });

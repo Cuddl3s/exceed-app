@@ -1,9 +1,10 @@
-export type Range = [number,number];
+export type Range = [number, number];
 
 export type Character = {
   move: number;
   card: Card;
-}
+  guage: 0;
+};
 
 export type Trigger = {
   name: string;
@@ -24,7 +25,6 @@ export type Attributes = {
   guard: number;
 };
 
-
 export type AttributeName = keyof Attributes;
 
 export type Triggers = {
@@ -32,8 +32,18 @@ export type Triggers = {
   before?: Trigger[];
   hit?: Trigger[];
   after?: Trigger[];
-}
+};
 
 export type TriggerName = keyof Triggers;
 
-export type GameField = [string, string, string, string, string, string, string, string, string];
+export type GameField = [
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string
+];
