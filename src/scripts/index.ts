@@ -91,7 +91,6 @@ const placePlayer = (player: string, gameField: GameField, number: number) => {
   } else {
     alert(`Cannot place ${player} on this field.`);
   }
-  console.log(gameField);
 };
 
 let fieldClickListener;
@@ -105,7 +104,6 @@ const showPlayerPositions = (gameField: GameField, $cardFields) => {
 
 const placeCardFieldOnClick = (player: string, gameField: GameField) => {
   const $cardFields = $("#game-field").children();
-  console.log(gameField);
   $cardFields.each(function (index) {
     $(this).on("click", function fieldClickListener() {
       let number = index;
@@ -115,26 +113,56 @@ const placeCardFieldOnClick = (player: string, gameField: GameField) => {
   });
 };
 
-const runHitEffects = (first: Character, second: Character) => {
-  first.card.triggers.hit[0].effect(first, second);
+const runAfterEffects = (first: Character, second: Character) => {
+  if (first.card.triggers.after) {
+    first.card.triggers.after.forEach((trigger) => {
+      trigger.effect(first, second);
+    });
+  }
 };
 
-const checkRange = (
-  attacker: Character,
-  defender: Character,
-  secondPlayer: string
-) => {
-  for (let i = 1; i <= attacker.card.attributes.range[1]; i++) {
+const calculateDamage = (attacker: Character, defender: Character) => {
+  const defenderDamage =
+    attacker.card.attributes.power - defender.card.attributes.armor;
+  if (defenderDamage > defender.card.attributes.guard) {
+    alert("Defender is stunned.");
+  } else {
+    return defenderDamage;
+  }
+};
+
+const runHitEffects = (attacker: Character, defender: Character) => {
+  if (attacker.card.triggers.before) {
+    attacker.card.triggers.hit.forEach((trigger) => {
+      trigger.effect(attacker, defender);
+    });
+  }
+};
+
+const checkRange = (attacker: Character, defender: Character) => {
+  let inRange = "false";
+
+  for (
+    let i = attacker.card.attributes.range[0];
+    i <= attacker.card.attributes.range[1];
+    i++
+  ) {
     if (
-      gameField.indexOf(secondPlayer) ===
-        attacker.card.attributes.range[0] + i ||
-      attacker.card.attributes.range[0] - i
+      gameField.indexOf(defender.player) ===
+        gameField.indexOf(attacker.player) + i ||
+      gameField.indexOf(attacker.player) - i
     ) {
-      attacker.guage++;
-      runHitEffects(attacker, defender);
+      inRange = "true";
     } else {
-      alert("The opponent is not in this card's attack range.");
+      return;
     }
+  }
+
+  if (inRange === "false") {
+    alert("The opponent is not in this card's attack range.");
+  } else {
+    attacker.guage++;
+    runHitEffects(attacker, defender);
   }
 };
 
@@ -142,6 +170,12 @@ const runBeforeEffects = (attacker: Character, defender: Character) => {
   if (attacker.card.triggers.before) {
     attacker.card.triggers.before.forEach((trigger) => {
       trigger.effect(attacker, defender);
+    });
+  }
+
+  if (defender.card.triggers.before) {
+    defender.card.triggers.before.forEach((trigger) => {
+      trigger.effect(defender, attacker);
     });
   }
 };
@@ -154,14 +188,23 @@ const compareSpeeds = (playerOne: Character, playerTwo: Character) => {
   );
 };
 
-const simulateFight = (
-  playerOne: Character,
-  playerTwo: Character,
-  secondPlayer: string
-) => {
+const simulateFight = (playerOne: Character, playerTwo: Character) => {
   const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
   runBeforeEffects(attacker, defender);
-  checkRange(attacker, defender, secondPlayer);
+  checkRange(attacker, defender);
+  const defenderDamage = calculateDamage(attacker, defender);
+  runAfterEffects(attacker, defender);
+  if (defenderDamage !== undefined) {
+    checkRange(defender, attacker);
+    const attackerDamage = calculateDamage(attacker, defender);
+    if (attackerDamage === undefined) {
+      alert("Opponent is stunned.");
+    }
+  } else {
+    alert("Opponent is stunned.");
+  }
+  // console.log(gameField, attacker, defender.move);
+  // return gameField;
 };
 
 $(() => {
@@ -169,21 +212,21 @@ $(() => {
 
   const playerOneDiv = "#configurator1";
   const playerTwoDiv = "#configurator2";
-  const firstPlayer = "Player One";
-  const secondPlayer = "Player Two";
 
   playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
 
   let playerOne: Character = {
     move: 0,
-    card: Focus,
+    card: Grasp,
     guage: 0,
+    player: "Player One",
   };
 
   let playerTwo: Character = {
     move: 0,
     card: Sweep,
     guage: 0,
+    player: "Player Two",
   };
 
   gameField = ["", "", "", "", "", "", "", "", ""];
@@ -192,15 +235,17 @@ $(() => {
   const $placeButtonPlayerTwo = $("#place-player-two-button");
 
   $placeButtonPlayerOne.on("click", function () {
-    placeCardFieldOnClick("Player One", gameField);
+    placeCardFieldOnClick(playerOne.player, gameField);
   });
 
   $placeButtonPlayerTwo.on("click", function () {
-    placeCardFieldOnClick("Player Two", gameField);
+    placeCardFieldOnClick(playerTwo.player, gameField);
+  });
+
+  $("#simulate-button").on("click", function () {
+    simulateFight(playerOne, playerTwo);
   });
 
   addCard(playerOne.card, 1);
   addCard(playerTwo.card, 2);
-
-  simulateFight(playerOne, playerTwo, secondPlayer);
 });

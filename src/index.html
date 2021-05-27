@@ -1,140 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Exceed Simulator</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
-<body>
-  <div class="container">
-    <div class="titles"><h1 id="player-one">Player #1</h1><h1 id="player-two">Player #2</h1></div>
-    <div class="configurators">
-      <div id="configurator1" class="card-configurator">
-        <div class="attributes-panel">
-          <div class="attribute">
-            <label for="attr-rng">Rng</label>
-            <input class="form-control" name="attr-range" type="text">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exceed Simulator</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="titles">
+        <h1 id="player-one">Player #1</h1>
+        <h1 id="player-two">Player #2</h1>
+      </div>
+      <div class="configurators">
+        <div id="configurator1" class="card-configurator">
+          <div class="attributes-panel">
+            <div class="attribute">
+              <label for="attr-rng">Rng</label>
+              <input class="form-control" name="attr-range" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-pow">Pow</label>
+              <input class="form-control" name="attr-power" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-spd">Spd</label>
+              <input class="form-control" name="attr-speed" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-arm">Arm</label>
+              <input class="form-control" name="attr-armor" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-grd">Grd</label>
+              <input class="form-control" name="attr-guard" type="text" />
+            </div>
           </div>
-          <div class="attribute">
-            <label for="attr-pow">Pow</label>
-            <input class="form-control" name="attr-power" type="text">
-
-          </div>
-          <div class="attribute">
-            <label for="attr-spd">Spd</label>
-            <input class="form-control" name="attr-speed" type="text">
-
-          </div>
-          <div class="attribute">
-            <label for="attr-arm">Arm</label>
-            <input class="form-control" name="attr-armor" type="text">
-
-          </div>
-          <div class="attribute">
-            <label for="attr-grd">Grd</label>
-            <input class="form-control" name="attr-guard" type="text">
+          <div class="trigger-panel">
+            <div class="addable-select">
+              <label for="always-on">Always on effects</label>
+              <select class="form-control" name="alwaysOn">
+                <option value="ignarmor">Ignore Armor</option>
+              </select>
+            </div>
+            <div class="addable-select">
+              <label for="before">Before</label>
+              <select class="form-control" name="before">
+                <option value="advanceThree">Advance 3</option>
+              </select>
+            </div>
+            <div class="addable-select">
+              <label for="hit">Hit</label>
+              <select class="form-control" name="hit">
+                <option value="stunImmunity">Stun Immunity</option>
+              </select>
+            </div>
+            <div class="addable-select">
+              <label for="after">After</label>
+              <select class="form-control" name="after">
+                <option value="none">None</option>
+              </select>
+            </div>
           </div>
         </div>
-        <div class="trigger-panel">
-          <div class="addable-select">
-            <label for="always-on">Always on effects</label>
-            <select class="form-control" name="alwaysOn">
-              <option value="ignarmor">Ignore Armor</option>
-            </select>
+        <div id="configurator2" class="card-configurator">
+          <div class="attributes-panel">
+            <div class="attribute">
+              <label for="attr-rng">Rng</label>
+              <input class="form-control" name="attr-range" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-pow">Pow</label>
+              <input class="form-control" name="attr-power" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-spd">Spd</label>
+              <input class="form-control" name="attr-speed" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-arm">Arm</label>
+              <input class="form-control" name="attr-armor" type="text" />
+            </div>
+            <div class="attribute">
+              <label for="attr-grd">Grd</label>
+              <input class="form-control" name="attr-guard" type="text" />
+            </div>
           </div>
-          <div class="addable-select">
-            <label for="before">Before</label>
-            <select class="form-control" name="before">
-              <option value="advanceThree">Advance 3</option>
-            </select>
-          </div>
-          <div class="addable-select">
-            <label for="hit">Hit</label>
-            <select class="form-control" name="hit">
-              <option value="stunImmunity">Stun Immunity</option>
-            </select>
-          </div>
-          <div class="addable-select">
-            <label for="after">After</label>
-            <select class="form-control" name="after">
-              <option value="none">None</option>
-            </select>
+          <div class="trigger-panel">
+            <div class="addable-select">
+              <label for="always-on">Always on effects</label>
+              <select class="form-control" name="alwaysOn">
+                <option value="ignarmor">Ignore Armor</option>
+              </select>
+            </div>
+            <div class="addable-select">
+              <label for="before">Before</label>
+              <select class="form-control" name="before">
+                <option value="advanceThree">Advance 3</option>
+              </select>
+            </div>
+            <div class="addable-select">
+              <label for="hit">Hit</label>
+              <select class="form-control" name="hit">
+                <option value="stunImmunity">Stun Immunity</option>
+              </select>
+            </div>
+            <div class="addable-select">
+              <label for="after">After</label>
+              <select class="form-control" name="after">
+                <option value="none">None</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
-      <div id="configurator2" class="card-configurator">
-        <div class="attributes-panel">
-          <div class="attribute">
-            <label for="attr-rng">Rng</label>
-            <input class="form-control" name="attr-range" type="text">
-          </div>
-          <div class="attribute">
-            <label for="attr-pow">Pow</label>
-            <input class="form-control" name="attr-power" type="text">
-
-          </div>
-          <div class="attribute">
-            <label for="attr-spd">Spd</label>
-            <input class="form-control" name="attr-speed" type="text">
-
-          </div>
-          <div class="attribute">
-            <label for="attr-arm">Arm</label>
-            <input class="form-control" name="attr-armor" type="text">
-
-          </div>
-          <div class="attribute">
-            <label for="attr-grd">Grd</label>
-            <input class="form-control" name="attr-guard" type="text">
-          </div>
-        </div>
-        <div class="trigger-panel">
-          <div class="addable-select">
-            <label for="always-on">Always on effects</label>
-            <select class="form-control" name="alwaysOn">
-              <option value="ignarmor">Ignore Armor</option>
-            </select>
-          </div>
-          <div class="addable-select">
-            <label for="before">Before</label>
-            <select class="form-control" name="before">
-              <option value="advanceThree">Advance 3</option>
-            </select>
-          </div>
-          <div class="addable-select">
-            <label for="hit">Hit</label>
-            <select class="form-control" name="hit">
-              <option value="stunImmunity">Stun Immunity</option>
-            </select>
-          </div>
-          <div class="addable-select">
-            <label for="after">After</label>
-            <select class="form-control" name="after">
-              <option value="none">None</option>
-            </select>
-          </div>
-        </div>
+      <div class="button-holder">
+        <button id="place-player-one-button" class="button">
+          Place Player #1
+        </button>
+        <button id="simulate-button" class="button">Simulate</button>
+        <button id="place-player-two-button" class="button">
+          Place Player #2
+        </button>
+      </div>
+      <div id="game-field">
+        <div class="card-field"></div>
+        <div class="card-field"></div>
+        <div class="card-field"></div>
+        <div class="card-field"></div>
+        <div class="card-field"></div>
+        <div class="card-field"></div>
+        <div class="card-field"></div>
+        <div class="card-field"></div>
+        <div class="card-field"></div>
       </div>
     </div>
-    <div class="button-holder">
-      <button id="place-player-one-button" class="button">Place Player #1</button>
-      <button id="place-player-two-button" class="button">Place Player #2</button>
-    </div>
-    <div id="game-field">
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-      <div class="card-field"></div>
-    </div>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
