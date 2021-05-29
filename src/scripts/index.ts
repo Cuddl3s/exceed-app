@@ -102,8 +102,11 @@ const showPlayerPositions = (gameField: GameField, $cardFields) => {
   });
 };
 
-const placeCardFieldOnClick = (player: string, gameField: GameField) => {
-  const $cardFields = $("#game-field").children();
+const placeCardFieldOnClick = (
+  player: string,
+  gameField: GameField,
+  $cardFields
+) => {
   $cardFields.each(function (index) {
     $(this).on("click", function fieldClickListener() {
       let number = index;
@@ -132,7 +135,7 @@ const calculateDamage = (attacker: Character, defender: Character) => {
 };
 
 const runHitEffects = (attacker: Character, defender: Character) => {
-  if (attacker.card.triggers.before) {
+  if (attacker.card.triggers.hit) {
     attacker.card.triggers.hit.forEach((trigger) => {
       trigger.effect(attacker, defender);
     });
@@ -188,12 +191,40 @@ const compareSpeeds = (playerOne: Character, playerTwo: Character) => {
   );
 };
 
-const simulateFight = (playerOne: Character, playerTwo: Character) => {
+const movePlayers = (attacker: Character, defender: Character, $cardFields) => {
+  const players = [attacker, defender];
+  players.forEach((player) => {
+    let playerIndex = gameField.indexOf(player.player);
+    let spotsToMove = 0;
+    for (let i = 1; i <= player.move; i++) {
+      if (gameField[playerIndex + i] !== "") {
+        spotsToMove += 2;
+      } else {
+        spotsToMove += 1;
+      }
+    }
+    gameField[playerIndex] = "";
+    if (playerIndex + spotsToMove <= 8) {
+      playerIndex = playerIndex + spotsToMove;
+    } else {
+      playerIndex = 8;
+    }
+    gameField[playerIndex] = player.player;
+  });
+  showPlayerPositions(gameField, $cardFields);
+};
+
+const simulateFight = (
+  playerOne: Character,
+  playerTwo: Character,
+  $cardFields
+) => {
   const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
   runBeforeEffects(attacker, defender);
   checkRange(attacker, defender);
   const defenderDamage = calculateDamage(attacker, defender);
   runAfterEffects(attacker, defender);
+  movePlayers(attacker, defender, $cardFields);
   if (defenderDamage !== undefined) {
     checkRange(defender, attacker);
     const attackerDamage = calculateDamage(attacker, defender);
@@ -203,7 +234,7 @@ const simulateFight = (playerOne: Character, playerTwo: Character) => {
   } else {
     alert("Opponent is stunned.");
   }
-  // console.log(gameField, attacker, defender.move);
+  console.log(gameField);
   // return gameField;
 };
 
@@ -233,17 +264,18 @@ $(() => {
 
   const $placeButtonPlayerOne = $("#place-player-one-button");
   const $placeButtonPlayerTwo = $("#place-player-two-button");
+  const $cardFields = $("#game-field").children();
 
   $placeButtonPlayerOne.on("click", function () {
-    placeCardFieldOnClick(playerOne.player, gameField);
+    placeCardFieldOnClick(playerOne.player, gameField, $cardFields);
   });
 
   $placeButtonPlayerTwo.on("click", function () {
-    placeCardFieldOnClick(playerTwo.player, gameField);
+    placeCardFieldOnClick(playerTwo.player, gameField, $cardFields);
   });
 
   $("#simulate-button").on("click", function () {
-    simulateFight(playerOne, playerTwo);
+    simulateFight(playerOne, playerTwo, $cardFields);
   });
 
   addCard(playerOne.card, 1);
