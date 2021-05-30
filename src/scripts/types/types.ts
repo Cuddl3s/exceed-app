@@ -3,8 +3,9 @@ export type Range = [number, number];
 export type Character = {
   move: number;
   card: Card;
-  guage: number;
+  gauge: number;
   player: string;
+  results: string;
 };
 
 export type Trigger = {

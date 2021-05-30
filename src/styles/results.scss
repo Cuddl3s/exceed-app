@@ -1,0 +1,8 @@
+.results-container {
+  display: flex;
+
+  .player {
+    flex-grow: 1;
+    text-align: center;
+  }
+}

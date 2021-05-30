@@ -125,13 +125,16 @@ const runAfterEffects = (first: Character, second: Character) => {
 };
 
 const calculateDamage = (attacker: Character, defender: Character) => {
+  let stunned = false;
   const defenderDamage =
     attacker.card.attributes.power - defender.card.attributes.armor;
   if (defenderDamage > defender.card.attributes.guard) {
-    alert("Defender is stunned.");
-  } else {
-    return defenderDamage;
+    alert(`${defender.player} is stunned.`);
+    stunned = true;
   }
+  $(`${defender.results}`).append(`<div>Stunned: ${stunned}</div>`);
+  $(`${defender.results}`).append(`<div>Damage: ${defenderDamage}</div>`);
+  return defenderDamage;
 };
 
 const runHitEffects = (attacker: Character, defender: Character) => {
@@ -164,9 +167,12 @@ const checkRange = (attacker: Character, defender: Character) => {
   if (inRange === "false") {
     alert("The opponent is not in this card's attack range.");
   } else {
-    attacker.guage++;
+    attacker.gauge++;
+    $(`${attacker.results}`).append(`<div>Gauge: ${attacker.gauge}</div>`);
     runHitEffects(attacker, defender);
   }
+
+  $(`${attacker.results}`).append(`<div>Hit: ${inRange}</div>`);
 };
 
 const runBeforeEffects = (attacker: Character, defender: Character) => {
@@ -227,15 +233,14 @@ const simulateFight = (
   movePlayers(attacker, defender, $cardFields);
   if (defenderDamage !== undefined) {
     checkRange(defender, attacker);
-    const attackerDamage = calculateDamage(attacker, defender);
+    const attackerDamage = calculateDamage(defender, attacker);
     if (attackerDamage === undefined) {
       alert("Opponent is stunned.");
     }
   } else {
     alert("Opponent is stunned.");
   }
-  console.log(gameField);
-  // return gameField;
+  return gameField;
 };
 
 $(() => {
@@ -249,15 +254,17 @@ $(() => {
   let playerOne: Character = {
     move: 0,
     card: Grasp,
-    guage: 0,
+    gauge: 0,
     player: "Player One",
+    results: "#one",
   };
 
   let playerTwo: Character = {
     move: 0,
     card: Sweep,
-    guage: 0,
+    gauge: 0,
     player: "Player Two",
+    results: "#two",
   };
 
   gameField = ["", "", "", "", "", "", "", "", ""];
