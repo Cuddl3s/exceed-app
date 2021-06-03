@@ -6,6 +6,7 @@
     "lint": "npm run lint:styles; npm run lint:scripts",
     "lint:styles": "stylelint src",
     "lint:scripts": "eslint src",
+    "test": "jest",
     "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "start": "webpack serve --config webpack/webpack.config.dev.js --open"
   },
@@ -54,12 +55,15 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@types/jest": "^26.0.23",
     "@types/jquery": "^3.5.5",
     "core-js": "^3.8.1",
     "eslint-config-prettier": "^8.3.0",
+    "jest": "^27.0.4",
     "jquery": "^3.6.0",
     "prettier": "2.3.0",
     "source-map-loader": "^2.0.1",
+    "ts-jest": "^27.0.2",
     "ts-loader": "^9.1.2",
     "typescript": "^4.2.4"
   },

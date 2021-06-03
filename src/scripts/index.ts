@@ -145,7 +145,11 @@ const runHitEffects = (attacker: Character, defender: Character) => {
   }
 };
 
-const checkRange = (attacker: Character, defender: Character) => {
+export const checkRange = (
+  attacker: Character,
+  defender: Character,
+  gameField: GameField
+) => {
   let inRange = "false";
 
   for (
@@ -227,12 +231,12 @@ const simulateFight = (
 ) => {
   const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
   runBeforeEffects(attacker, defender);
-  checkRange(attacker, defender);
+  checkRange(attacker, defender, gameField);
   const defenderDamage = calculateDamage(attacker, defender);
   runAfterEffects(attacker, defender);
   movePlayers(attacker, defender, $cardFields);
   if (defenderDamage !== undefined) {
-    checkRange(defender, attacker);
+    checkRange(defender, attacker, gameField);
     const attackerDamage = calculateDamage(defender, attacker);
     if (attackerDamage === undefined) {
       alert("Opponent is stunned.");
