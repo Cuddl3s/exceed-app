@@ -5,7 +5,7 @@ export const checkRange = (
   defender: Character,
   gameField: GameField
 ) => {
-  let inRange = "false";
+  let inRange = false;
 
   for (
     let i = attacker.card.attributes.range[0];
@@ -15,21 +15,21 @@ export const checkRange = (
     if (
       gameField.indexOf(defender.player) ===
         gameField.indexOf(attacker.player) + i ||
-      gameField.indexOf(attacker.player) - i
+      gameField.indexOf(defender.player) ===
+        gameField.indexOf(attacker.player) - i
     ) {
-      inRange = "true";
-    } else {
-      return;
+      return (inRange = true);
     }
   }
 
-  if (inRange === "false") {
-    alert("The opponent is not in this card's attack range.");
-  } else {
-    attacker.gauge++;
-    // $(`${attacker.results}`).append(`<div>Gauge: ${attacker.gauge}</div>`);
-    // runHitEffects(attacker, defender);
-  }
+  return inRange;
+
+  // if (inRange === false) {
+  //   alert("The opponent is not in this card's attack range.");
+  // } else {
+  //   attacker.gauge++;
+  //   $(`${attacker.results}`).append(`<div>Gauge: ${attacker.gauge}</div>`);
+  // }
 
   // $(`${attacker.results}`).append(`<div>Hit: ${inRange}</div>`);
 };

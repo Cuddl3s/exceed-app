@@ -1,4 +1,4 @@
-import { checkRange } from "./simulate";
+import { checkRange } from "./check-range";
 import { Character, GameField, Range } from "./types/types";
 
 const setUpCharactersAndGameField = (

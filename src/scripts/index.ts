@@ -125,16 +125,20 @@ const runAfterEffects = (first: Character, second: Character) => {
 };
 
 const calculateDamage = (attacker: Character, defender: Character) => {
+  if (checkRange(attacker, defender, gameField)) {
+    return attacker.card.attributes.power - defender.card.attributes.armor;
+  } else {
+    return 0;
+  }
+};
+
+const isStunned = (attacker: Character, defender: Character) => {
   let stunned = false;
-  const defenderDamage =
-    attacker.card.attributes.power - defender.card.attributes.armor;
-  if (defenderDamage > defender.card.attributes.guard) {
+  if (calculateDamage(attacker, defender) > defender.card.attributes.guard) {
     alert(`${defender.player} is stunned.`);
     stunned = true;
   }
-  $(`${defender.results}`).append(`<div>Stunned: ${stunned}</div>`);
-  $(`${defender.results}`).append(`<div>Damage: ${defenderDamage}</div>`);
-  return defenderDamage;
+  return stunned;
 };
 
 const runHitEffects = (attacker: Character, defender: Character) => {
@@ -150,7 +154,7 @@ export const checkRange = (
   defender: Character,
   gameField: GameField
 ) => {
-  let inRange = "false";
+  let inRange = false;
 
   for (
     let i = attacker.card.attributes.range[0];
@@ -160,35 +164,20 @@ export const checkRange = (
     if (
       gameField.indexOf(defender.player) ===
         gameField.indexOf(attacker.player) + i ||
-      gameField.indexOf(attacker.player) - i
+      gameField.indexOf(defender.player) ===
+        gameField.indexOf(attacker.player) - i
     ) {
-      inRange = "true";
-    } else {
-      return;
+      return (inRange = true);
     }
   }
 
-  if (inRange === "false") {
-    alert("The opponent is not in this card's attack range.");
-  } else {
-    attacker.gauge++;
-    $(`${attacker.results}`).append(`<div>Gauge: ${attacker.gauge}</div>`);
-    runHitEffects(attacker, defender);
-  }
-
-  $(`${attacker.results}`).append(`<div>Hit: ${inRange}</div>`);
+  return inRange;
 };
 
 const runBeforeEffects = (attacker: Character, defender: Character) => {
   if (attacker.card.triggers.before) {
     attacker.card.triggers.before.forEach((trigger) => {
       trigger.effect(attacker, defender);
-    });
-  }
-
-  if (defender.card.triggers.before) {
-    defender.card.triggers.before.forEach((trigger) => {
-      trigger.effect(defender, attacker);
     });
   }
 };
@@ -201,7 +190,7 @@ const compareSpeeds = (playerOne: Character, playerTwo: Character) => {
   );
 };
 
-const movePlayers = (attacker: Character, defender: Character, $cardFields) => {
+const movePlayers = (attacker: Character, defender: Character) => {
   const players = [attacker, defender];
   players.forEach((player) => {
     let playerIndex = gameField.indexOf(player.player);
@@ -221,7 +210,37 @@ const movePlayers = (attacker: Character, defender: Character, $cardFields) => {
     }
     gameField[playerIndex] = player.player;
   });
-  showPlayerPositions(gameField, $cardFields);
+};
+
+const runAttack = (attacker: Character, defender: Character) => {
+  runBeforeEffects(attacker, defender);
+  checkRange(attacker, defender, gameField);
+  const inRange = checkRange(attacker, defender, gameField);
+  if (inRange === true) {
+    attacker.gauge++;
+  } else {
+    alert(`${defender.player} is not in ${attacker.player}'s range of attack.`);
+  }
+
+  runHitEffects(attacker, defender);
+  runAfterEffects(attacker, defender);
+
+  const damage = calculateDamage(defender, attacker);
+  const stunned = isStunned(defender, attacker);
+
+  return {
+    gauge: attacker.gauge,
+    hit: inRange,
+    damage: damage,
+    stunned: stunned,
+  };
+};
+
+const showResults = (player: Character, playerResults) => {
+  $(`${player.results}`).append(`<div>Hit: ${playerResults.hit}</div>`);
+  $(`${player.results}`).append(`<div>Gauge: ${playerResults.gauge}</div>`);
+  $(`${player.results}`).append(`<div>Damage: ${playerResults.damage}</div>`);
+  $(`${player.results}`).append(`<div>Stunned: ${playerResults.stunned}</div>`);
 };
 
 const simulateFight = (
@@ -230,20 +249,14 @@ const simulateFight = (
   $cardFields
 ) => {
   const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
-  runBeforeEffects(attacker, defender);
-  checkRange(attacker, defender, gameField);
-  const defenderDamage = calculateDamage(attacker, defender);
-  runAfterEffects(attacker, defender);
-  movePlayers(attacker, defender, $cardFields);
-  if (defenderDamage !== undefined) {
-    checkRange(defender, attacker, gameField);
-    const attackerDamage = calculateDamage(defender, attacker);
-    if (attackerDamage === undefined) {
-      alert("Opponent is stunned.");
-    }
-  } else {
-    alert("Opponent is stunned.");
-  }
+  const attackerResults = runAttack(attacker, defender);
+  const defenderResults = runAttack(defender, attacker);
+  movePlayers(attacker, defender);
+  showPlayerPositions(gameField, $cardFields);
+
+  showResults(attacker, attackerResults);
+  showResults(defender, defenderResults);
+
   return gameField;
 };
 
