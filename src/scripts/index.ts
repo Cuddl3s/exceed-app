@@ -243,11 +243,19 @@ const showResults = (player: Character, playerResults) => {
   $(`${player.results}`).append(`<div>Stunned: ${playerResults.stunned}</div>`);
 };
 
+const clearResults = () => {
+  $("#one").empty();
+  $("#two").empty();
+  console.log($("one"));
+};
+
 const simulateFight = (
   playerOne: Character,
   playerTwo: Character,
   $cardFields
 ) => {
+  clearResults();
+
   const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
   const attackerResults = runAttack(attacker, defender);
   const defenderResults = runAttack(defender, attacker);
