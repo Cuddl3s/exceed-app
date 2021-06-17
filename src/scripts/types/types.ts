@@ -14,7 +14,6 @@ export type Trigger = {
 };
 
 export type Card = {
-  name: string;
   attributes: Attributes;
   triggers: Triggers;
 };

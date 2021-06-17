@@ -1,11 +1,9 @@
-import { Card } from '../types/types';
-import { alwaysOnSpike } from './triggers/always_on';
+import { Card } from "../types/types";
+import { alwaysOnSpike } from "./triggers/always_on";
 
 const Spike: Card = {
-  name: "Spike",
-  
   attributes: {
-    range: [2,3],
+    range: [2, 3],
     speed: 5,
     power: 3,
     armor: 0,
@@ -14,7 +12,7 @@ const Spike: Card = {
 
   triggers: {
     alwaysOn: [alwaysOnSpike],
-  }
+  },
 };
 
 export default Spike;

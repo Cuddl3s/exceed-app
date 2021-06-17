@@ -1,11 +1,9 @@
-import { Card } from '../types/types';
-import { beforeDive } from './triggers/before';
+import { Card } from "../types/types";
+import { beforeDive } from "./triggers/before";
 
 const Dive: Card = {
-  name: "Dive",
-  
   attributes: {
-    range: [1,1],
+    range: [1, 1],
     speed: 5,
     power: 4,
     armor: 0,
@@ -14,7 +12,7 @@ const Dive: Card = {
 
   triggers: {
     before: [beforeDive],
-  }
+  },
 };
 
 export default Dive;

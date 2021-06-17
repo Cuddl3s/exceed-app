@@ -1,11 +1,9 @@
-import { Card } from '../types/types';
-import { afterCross } from './triggers/after';
+import { Card } from "../types/types";
+import { afterCross } from "./triggers/after";
 
 const Cross: Card = {
-  name: "Cross",
-  
   attributes: {
-    range: [1,2],
+    range: [1, 2],
     speed: 3,
     power: 6,
     armor: 0,
@@ -14,7 +12,7 @@ const Cross: Card = {
 
   triggers: {
     after: [afterCross],
-  }
+  },
 };
 
 export default Cross;

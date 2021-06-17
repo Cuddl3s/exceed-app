@@ -5,17 +5,15 @@ import {
   Character,
   Trigger,
   GameField,
+  Range,
 } from "./types/types";
 
 import triggers from "./cards/triggers";
-import Grasp from "./cards/Grasp";
-import Assault from "./cards/Assault";
-import Block from "./cards/Block";
-import Cross from "./cards/Cross";
-import Dive from "./cards/Dive";
-import Focus from "./cards/Focus";
-import Spike from "./cards/Spike";
-import Sweep from "./cards/Sweep";
+
+import after from "./cards/triggers/after";
+import always_on from "./cards/triggers/always_on";
+import before from "./cards/triggers/before";
+import hit from "./cards/triggers/hit";
 
 let gameField: GameField;
 
@@ -246,7 +244,6 @@ const showResults = (player: Character, playerResults) => {
 const clearResults = () => {
   $("#one").empty();
   $("#two").empty();
-  console.log($("one"));
 };
 
 const simulateFight = (
@@ -268,17 +265,77 @@ const simulateFight = (
   return gameField;
 };
 
+const getRange = (player): Range => {
+  const input = $(player).val();
+  let from = 0,
+    to = 0;
+
+  if (input === "string") {
+    if (input.length === 1) {
+      from = parseInt(input);
+      to = from;
+    } else {
+      const numbers = input.split("-");
+      from = parseInt(numbers[0]);
+      to = parseInt(numbers[1]);
+    }
+  }
+
+  return [from, to];
+};
+
+const attributeReferencePlayerOne = "-one";
+const attributeReferencePlayerTwo = "-two";
+const attributesHtml = (attributeReference) => {
+  return {
+    speed: `speed${attributeReference}`,
+    power: `power${attributeReference}`,
+    armor: `armor${attributeReference}`,
+    guard: `guard${attributeReference}`,
+  };
+};
+
 $(() => {
   initTriggerSelects();
 
   const playerOneDiv = "#configurator1";
   const playerTwoDiv = "#configurator2";
+  const power = $("#power-one").val();
+  const armor = $("#armor-one").val();
+  const guard = $("#guard-one").val();
+  const speed = $("#speed-one").val();
 
   playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
 
   let playerOne: Character = {
     move: 0,
-    card: Grasp,
+    card: {
+      attributes: {
+        range: getRange("#range-one"),
+        speed:
+          typeof attributesHtml(attributeReferencePlayerOne).speed === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerOne).speed)
+            : 0,
+        power:
+          typeof attributesHtml(attributeReferencePlayerOne).power === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerOne).power)
+            : 0,
+        armor:
+          typeof attributesHtml(attributeReferencePlayerOne).armor === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerOne).armor)
+            : 0,
+        guard:
+          typeof attributesHtml(attributeReferencePlayerOne).guard === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerOne).guard)
+            : 0,
+      },
+      triggers: {
+        alwaysOn: always_on,
+        before: before,
+        hit: hit,
+        after: after,
+      },
+    },
     gauge: 0,
     player: "Player One",
     results: "#one",
@@ -286,7 +343,33 @@ $(() => {
 
   let playerTwo: Character = {
     move: 0,
-    card: Sweep,
+    card: {
+      attributes: {
+        range: getRange("#range-two"),
+        speed:
+          typeof attributesHtml(attributeReferencePlayerTwo).speed === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerTwo).speed)
+            : 0,
+        power:
+          typeof attributesHtml(attributeReferencePlayerTwo).power === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerTwo).power)
+            : 0,
+        armor:
+          typeof attributesHtml(attributeReferencePlayerTwo).armor === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerTwo).armor)
+            : 0,
+        guard:
+          typeof attributesHtml(attributeReferencePlayerTwo).guard === "string"
+            ? parseInt(attributesHtml(attributeReferencePlayerTwo).guard)
+            : 0,
+      },
+      triggers: {
+        alwaysOn: always_on,
+        before: before,
+        hit: hit,
+        after: after,
+      },
+    },
     gauge: 0,
     player: "Player Two",
     results: "#two",
@@ -306,10 +389,10 @@ $(() => {
     placeCardFieldOnClick(playerTwo.player, gameField, $cardFields);
   });
 
+  addCard(playerOne.card, 1);
+  addCard(playerTwo.card, 2);
+
   $("#simulate-button").on("click", function () {
     simulateFight(playerOne, playerTwo, $cardFields);
   });
-
-  addCard(playerOne.card, 1);
-  addCard(playerTwo.card, 2);
 });

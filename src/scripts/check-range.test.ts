@@ -9,7 +9,6 @@ const setUpCharactersAndGameField = (
   const attacker: Character = {
     move: 0,
     card: {
-      name: "test",
       attributes: {
         range: attackerRange,
         speed: 1,
@@ -27,7 +26,6 @@ const setUpCharactersAndGameField = (
   const defender: Character = {
     move: 0,
     card: {
-      name: "test",
       attributes: {
         range: [1, 1],
         speed: 1,
@@ -69,6 +67,24 @@ describe("checkRange", () => {
       [1, 1],
       0,
       5
+    );
+    expect(checkRange(attacker, defender, gameField)).toBe(false);
+  });
+
+  test("should return true when opponent is in range", () => {
+    const { attacker, defender, gameField } = setUpCharactersAndGameField(
+      [1, 1],
+      2,
+      1
+    );
+    expect(checkRange(attacker, defender, gameField)).toBe(true);
+  });
+
+  test("should return false when opponent is not in range", () => {
+    const { attacker, defender, gameField } = setUpCharactersAndGameField(
+      [1, 1],
+      7,
+      3
     );
     expect(checkRange(attacker, defender, gameField)).toBe(false);
   });

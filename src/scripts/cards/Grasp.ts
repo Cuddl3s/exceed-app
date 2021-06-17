@@ -1,11 +1,9 @@
-import { Card } from '../types/types';
-import { hitGrasp } from './triggers/hit';
+import { Card } from "../types/types";
+import { hitGrasp } from "./triggers/hit";
 
 const Grasp: Card = {
-  name: "Grasp",
-  
   attributes: {
-    range: [1,1],
+    range: [1, 1],
     speed: 7,
     power: 3,
     armor: 0,
@@ -14,7 +12,7 @@ const Grasp: Card = {
 
   triggers: {
     hit: [hitGrasp],
-  }
+  },
 };
 
 export default Grasp;
