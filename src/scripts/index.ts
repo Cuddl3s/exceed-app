@@ -253,6 +253,12 @@ const simulateFight = (
 ) => {
   clearResults();
 
+  playerOne.card.attributes.range = getRange("#range-one");
+  playerTwo.card.attributes.range = getRange("#range-two");
+
+  console.log(playerOne.card.attributes.range);
+  console.log(playerOne.card.attributes.speed);
+
   const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
   const attackerResults = runAttack(attacker, defender);
   const defenderResults = runAttack(defender, attacker);
@@ -270,7 +276,7 @@ const getRange = (player): Range => {
   let from = 0,
     to = 0;
 
-  if (input === "string") {
+  if (typeof input === "string") {
     if (input.length === 1) {
       from = parseInt(input);
       to = from;
@@ -284,26 +290,19 @@ const getRange = (player): Range => {
   return [from, to];
 };
 
-const attributeReferencePlayerOne = "-one";
-const attributeReferencePlayerTwo = "-two";
-const attributesHtml = (attributeReference) => {
-  return {
-    speed: `speed${attributeReference}`,
-    power: `power${attributeReference}`,
-    armor: `armor${attributeReference}`,
-    guard: `guard${attributeReference}`,
-  };
-};
-
 $(() => {
   initTriggerSelects();
 
   const playerOneDiv = "#configurator1";
   const playerTwoDiv = "#configurator2";
-  const power = $("#power-one").val();
-  const armor = $("#armor-one").val();
-  const guard = $("#guard-one").val();
-  const speed = $("#speed-one").val();
+  const powerOne = $("#power-one").val();
+  const armorOne = $("#armor-one").val();
+  const guardOne = $("#guard-one").val();
+  const speedOne = $("#speed-one").val();
+  const powerTwo = $("#power-two").val();
+  const armorTwo = $("#armor-two").val();
+  const guardTwo = $("#guard-two").val();
+  const speedTwo = $("#speed-two").val();
 
   playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
 
@@ -311,23 +310,11 @@ $(() => {
     move: 0,
     card: {
       attributes: {
-        range: getRange("#range-one"),
-        speed:
-          typeof attributesHtml(attributeReferencePlayerOne).speed === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerOne).speed)
-            : 0,
-        power:
-          typeof attributesHtml(attributeReferencePlayerOne).power === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerOne).power)
-            : 0,
-        armor:
-          typeof attributesHtml(attributeReferencePlayerOne).armor === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerOne).armor)
-            : 0,
-        guard:
-          typeof attributesHtml(attributeReferencePlayerOne).guard === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerOne).guard)
-            : 0,
+        range: [0, 0],
+        speed: typeof speedOne === "string" ? parseInt(speedOne) : 0,
+        power: typeof powerOne === "string" ? parseInt(powerOne) : 0,
+        armor: typeof armorOne === "string" ? parseInt(armorOne) : 0,
+        guard: typeof guardOne === "string" ? parseInt(guardOne) : 0,
       },
       triggers: {
         alwaysOn: always_on,
@@ -345,23 +332,11 @@ $(() => {
     move: 0,
     card: {
       attributes: {
-        range: getRange("#range-two"),
-        speed:
-          typeof attributesHtml(attributeReferencePlayerTwo).speed === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerTwo).speed)
-            : 0,
-        power:
-          typeof attributesHtml(attributeReferencePlayerTwo).power === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerTwo).power)
-            : 0,
-        armor:
-          typeof attributesHtml(attributeReferencePlayerTwo).armor === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerTwo).armor)
-            : 0,
-        guard:
-          typeof attributesHtml(attributeReferencePlayerTwo).guard === "string"
-            ? parseInt(attributesHtml(attributeReferencePlayerTwo).guard)
-            : 0,
+        range: [0, 0],
+        speed: typeof speedTwo === "string" ? parseInt(speedTwo) : 0,
+        power: typeof powerTwo === "string" ? parseInt(powerTwo) : 0,
+        armor: typeof armorTwo === "string" ? parseInt(armorTwo) : 0,
+        guard: typeof guardTwo === "string" ? parseInt(guardTwo) : 0,
       },
       triggers: {
         alwaysOn: always_on,
