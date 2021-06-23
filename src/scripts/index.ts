@@ -9,11 +9,14 @@ import {
 } from "./types/types";
 
 import triggers from "./cards/triggers";
+import Grasp from "./cards/Grasp";
+import Sweep from "./cards/Sweep";
 
 import after from "./cards/triggers/after";
 import always_on from "./cards/triggers/always_on";
 import before from "./cards/triggers/before";
-import hit from "./cards/triggers/hit";
+import hit, { hitGrasp, hitSweep } from "./cards/triggers/hit";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 let gameField: GameField;
 
@@ -24,6 +27,54 @@ if (process.env.NODE_ENV === "development") {
 console.log("webpack starterkit");
 
 let playerConfigurators = [];
+
+// $("form-control[name=`before`]").on("change", function ({ target: value }) {
+//   const newValue = value;
+
+//   playerOne.card.triggers.before.forEach((trigger) => {
+//     if (trigger === newValue) {
+//       playerOne.card.triggers.before = newValue;
+//     } else {
+//       return;
+//     }
+//   });
+// });
+
+// $("form-control[name=`always-on`]").on("change", function ({ target: value }) {
+//   const newValue = value;
+// });
+
+// $("form-control[name=`hit`]").on("change", function ({ target: value }) {
+//   const newValue = value;
+// });
+
+// $("form-control[name=`after`]").on("change", function ({ target: value }) {
+//   const newValue = value;
+// });
+
+/*
+<select value="2">
+  <option value="Close 2">Close 2</option>
+  <option value="Push 1">Push 1</option>
+</select>
+
+$(selectBefore).addEventListener("change", (event) => {
+  const newValue = event.target.value;
+   iterate through all before effects
+  find the one with trigger.name === event.target.value
+  => Found it!
+
+  playerOne.card.triggers.before = [before]
+})
+
+$(selectHit).addEventListener("change", (e) => {
+
+})
+
+$(selectAfter).addEventListener("change", (e) => {
+
+})
+*/
 
 const initTriggerSelects = () => {
   ["before", "hit", "after", "alwaysOn"].forEach((triggerType) => {
@@ -246,31 +297,6 @@ const clearResults = () => {
   $("#two").empty();
 };
 
-const simulateFight = (
-  playerOne: Character,
-  playerTwo: Character,
-  $cardFields
-) => {
-  clearResults();
-
-  playerOne.card.attributes.range = getRange("#range-one");
-  playerTwo.card.attributes.range = getRange("#range-two");
-
-  console.log(playerOne.card.attributes.range);
-  console.log(playerOne.card.attributes.speed);
-
-  const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
-  const attackerResults = runAttack(attacker, defender);
-  const defenderResults = runAttack(defender, attacker);
-  movePlayers(attacker, defender);
-  showPlayerPositions(gameField, $cardFields);
-
-  showResults(attacker, attackerResults);
-  showResults(defender, defenderResults);
-
-  return gameField;
-};
-
 const getRange = (player): Range => {
   const input = $(player).val();
   let from = 0,
@@ -290,19 +316,94 @@ const getRange = (player): Range => {
   return [from, to];
 };
 
+const currentPlayerAttributes = (playerOne, rangeContainer) => {
+  $(".att-one > input").on("change", function () {
+    playerOne.card.attributes.range = getRange(rangeContainer);
+    playerOne.card.attributes.speed = $("#speed-one").val();
+    playerOne.card.attributes.power = $("#power-one").val();
+    playerOne.card.attributes.armor = $("#armor-one").val();
+    playerOne.card.attributes.guard = $("#guard-one").val();
+  });
+
+  // playerTwo.card.attributes.range = getRange("#range-two");
+  // playerTwo.card.attributes.speed = $("#speed-two").val();
+  // playerTwo.card.attributes.power = $("#power-two").val();
+  // playerTwo.card.attributes.armor = $("#armor-two").val();
+  // playerTwo.card.attributes.guard = $("#guard-two").val();
+};
+
+const currentPlayerTriggers = (container, player) => {
+  const test = $(`.${container}[name="before"]`);
+  $(`.${container}[name="before"]`).on("change", function () {
+    const newValue = $(this).val();
+    triggers["before"].forEach((trigger) => {
+      if (trigger.name === newValue) {
+        player.card.triggers.before = [trigger];
+      } else {
+        player.card.triggers.before = [];
+      }
+    });
+  });
+
+  $(`.${container}[name="hit"]`).on("change", function () {
+    const newValue = $(this).val();
+    triggers["hit"].forEach((trigger) => {
+      if (trigger.name === newValue) {
+        player.card.triggers.hit = [trigger];
+      } else {
+        player.card.triggers.hit = [];
+      }
+    });
+  });
+
+  $(`.${container}[name="after"]`).on("change", function () {
+    const newValue = $(this).val();
+    triggers["after"].forEach((trigger) => {
+      if (trigger.name === newValue) {
+        player.card.triggers.after = [trigger];
+      } else {
+        player.card.triggers.after = [];
+      }
+    });
+  });
+
+  $(`.${container}[name="alwaysOn"]`).on("change", function () {
+    const newValue = $(this).val();
+    triggers["alwaysOn"].forEach((trigger) => {
+      if (trigger.name === newValue) {
+        player.card.triggers.alwaysOn = [trigger];
+      } else {
+        player.card.triggers.alwaysOn = [];
+      }
+    });
+  });
+};
+
+const simulateFight = (
+  playerOne: Character,
+  playerTwo: Character,
+  $cardFields
+) => {
+  clearResults();
+
+  const [attacker, defender] = compareSpeeds(playerOne, playerTwo);
+  const attackerResults = runAttack(attacker, defender);
+  // check if defender is stunned
+  const defenderResults = runAttack(defender, attacker);
+  movePlayers(attacker, defender);
+  showPlayerPositions(gameField, $cardFields);
+
+  showResults(attacker, attackerResults);
+  showResults(defender, defenderResults);
+
+  return gameField;
+};
+
 $(() => {
   initTriggerSelects();
 
   const playerOneDiv = "#configurator1";
   const playerTwoDiv = "#configurator2";
-  const powerOne = $("#power-one").val();
-  const armorOne = $("#armor-one").val();
-  const guardOne = $("#guard-one").val();
-  const speedOne = $("#speed-one").val();
-  const powerTwo = $("#power-two").val();
-  const armorTwo = $("#armor-two").val();
-  const guardTwo = $("#guard-two").val();
-  const speedTwo = $("#speed-two").val();
 
   playerConfigurators.push($(playerOneDiv), $(playerTwoDiv));
 
@@ -310,17 +411,14 @@ $(() => {
     move: 0,
     card: {
       attributes: {
-        range: [0, 0],
-        speed: typeof speedOne === "string" ? parseInt(speedOne) : 0,
-        power: typeof powerOne === "string" ? parseInt(powerOne) : 0,
-        armor: typeof armorOne === "string" ? parseInt(armorOne) : 0,
-        guard: typeof guardOne === "string" ? parseInt(guardOne) : 0,
+        range: Grasp.attributes.range,
+        speed: Grasp.attributes.speed,
+        power: Grasp.attributes.power,
+        armor: Grasp.attributes.armor,
+        guard: Grasp.attributes.guard,
       },
       triggers: {
-        alwaysOn: always_on,
-        before: before,
-        hit: hit,
-        after: after,
+        hit: [hitGrasp],
       },
     },
     gauge: 0,
@@ -332,17 +430,14 @@ $(() => {
     move: 0,
     card: {
       attributes: {
-        range: [0, 0],
-        speed: typeof speedTwo === "string" ? parseInt(speedTwo) : 0,
-        power: typeof powerTwo === "string" ? parseInt(powerTwo) : 0,
-        armor: typeof armorTwo === "string" ? parseInt(armorTwo) : 0,
-        guard: typeof guardTwo === "string" ? parseInt(guardTwo) : 0,
+        range: Sweep.attributes.range,
+        speed: Sweep.attributes.speed,
+        power: Sweep.attributes.power,
+        armor: Sweep.attributes.armor,
+        guard: Sweep.attributes.guard,
       },
       triggers: {
-        alwaysOn: always_on,
-        before: before,
-        hit: hit,
-        after: after,
+        hit: [hitSweep],
       },
     },
     gauge: 0,
@@ -370,4 +465,10 @@ $(() => {
   $("#simulate-button").on("click", function () {
     simulateFight(playerOne, playerTwo, $cardFields);
   });
+
+  currentPlayerTriggers("one", playerOne);
+  currentPlayerTriggers("two", playerTwo);
+
+  currentPlayerAttributes(playerOne, "#range-one");
+  currentPlayerAttributes(playerTwo, "#range-two");
 });
