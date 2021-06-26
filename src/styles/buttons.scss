@@ -20,3 +20,22 @@
     border: 2px solid #044ca2;
   }
 }
+
+.clear {
+  display: flex;
+  justify-content: center;
+
+  #clear-button {
+    cursor: pointer;
+    border: 1px solid #411010;
+    border-radius: 6%;
+    font-size: 16px;
+    background-color: #b95858;
+    color: white;
+  }
+
+  #clear-button:hover {
+    background-color: #c7333a;
+    color: white;
+  }
+}
